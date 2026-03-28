@@ -47,8 +47,8 @@
       ]
     },
     "/home/runner/workspace/contracts/AutoReinvestBotV5.sol": {
-      "lastModificationDate": 1774686549121,
-      "contentHash": "58e5dae9d9c74a7928714f5454a358f9",
+      "lastModificationDate": 1774689329690,
+      "contentHash": "1d3e771e496bc1df5960d5ecd47088ca",
       "sourceName": "contracts/AutoReinvestBotV5.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -87,6 +87,7 @@
         "AutoReinvestBotV5",
         "INonfungiblePositionManager",
         "ISwapRouter",
+        "ITimeStaking",
         "IUniswapV3Factory",
         "IUniswapV3Pool"
       ]

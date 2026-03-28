@@ -5,8 +5,8 @@ Full-stack DeFi automation: a Solidity smart contract + React frontend + Node.js
 automatically collecting Uniswap V3 fees on World Chain and reinvesting them into WLD/H2O/BTCH2O.
 
 ## Deployed Contract
-- **AutoReinvestBotV5**: `0x618B521C3d7DAD1a2F186aD830E69ba6d5081E1E`
-- **Worldscan**: https://worldscan.org/address/0x618B521C3d7DAD1a2F186aD830E69ba6d5081E1E
+- **AutoReinvestBotV5**: `0x000051C9c9b556C8611cE1ceEDFc19140a1681d6`
+- **Worldscan**: https://worldscan.org/address/0x000051C9c9b556C8611cE1ceEDFc19140a1681d6
 - **Network**: World Chain (Chain ID: 480)
 
 ## Project Structure
