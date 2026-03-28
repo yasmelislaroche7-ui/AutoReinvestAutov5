@@ -11,4 +11,14 @@ export default defineConfig({
   define: {
     global: "globalThis",
   },
+  build: {
+    sourcemap: false,
+  },
+  optimizeDeps: {
+    exclude: ["@reown/appkit"],
+    esbuildOptions: {
+      sourcemap: false,
+      ignoreAnnotations: true,
+    },
+  },
 });
