@@ -3,6 +3,7 @@ import { useBotStatus } from "../hooks/useBot.js";
 import { useContractRead } from "../hooks/useContract.js";
 import "../styles/BotControl.css";
 
+// getConfig() array: [0]=interval [1]=reserveFeeBps [2]=h2oShareBps [3]=btch2oShareBps [4]=paused [5]=lastReinvestAt
 const MAX_VISIBLE_LOGS = 10;
 
 export default function BotControl({ positions, isOwner }) {
@@ -18,9 +19,10 @@ export default function BotControl({ positions, isOwner }) {
   const [customInterval, setCustomInterval] = useState("");
   const [actionMsg, setActionMsg] = useState("");
 
+  // config[0] = interval seconds
   const intervalSecs = customInterval
     ? parseInt(customInterval)
-    : config ? Number(config[1]) : 300;
+    : config ? Number(config[0]) : 300;
 
   useEffect(() => {
     if (positions?.length) refreshFees(positions);
@@ -51,6 +53,8 @@ export default function BotControl({ positions, isOwner }) {
     setActionMsg("");
   };
 
+  // config[5] = lastReinvestAt timestamp
+  const lastReinvestAt = config ? Number(config[5]) : 0;
   const visibleLogs = logs.slice(0, MAX_VISIBLE_LOGS);
 
   return (
@@ -82,18 +86,18 @@ export default function BotControl({ positions, isOwner }) {
           </strong>
         </div>
         <div className="fee-chip">
-          <span>Fees Token 0 Sin Reclamar</span>
+          <span>Fees Token 0 Pendientes</span>
           <strong className="text-accent">{totalFees0.toFixed(6)}</strong>
         </div>
         <div className="fee-chip">
-          <span>Fees Token 1 Sin Reclamar</span>
+          <span>Fees Token 1 Pendientes</span>
           <strong className="text-accent">{totalFees1.toFixed(6)}</strong>
         </div>
         <div className="fee-chip">
-          <span>Último Reinvest</span>
+          <span>Último Reinvest (on-chain)</span>
           <strong>
-            {config && Number(config[6]) > 0
-              ? new Date(Number(config[6]) * 1000).toLocaleTimeString()
+            {lastReinvestAt > 0
+              ? new Date(lastReinvestAt * 1000).toLocaleString()
               : "Nunca"}
           </strong>
         </div>
@@ -104,7 +108,7 @@ export default function BotControl({ positions, isOwner }) {
           className="btn-primary manual-btn"
           onClick={handleManualReinvest}
           disabled={!positions?.length || !!actionMsg}
-          title="Recolectar fees y reinvertir ahora"
+          title="Recolectar fees de todas las posiciones y reinvertir"
         >
           ⚡ Reinvertir Ahora
         </button>
@@ -112,7 +116,7 @@ export default function BotControl({ positions, isOwner }) {
           className="btn-success manual-btn"
           onClick={handleManualClaim}
           disabled={!!actionMsg}
-          title="Reclamar recompensas de staking TIME"
+          title="Reclamar recompensas WLD del staking TIME"
         >
           🏆 Reclamar TIME
         </button>
@@ -139,7 +143,7 @@ export default function BotControl({ positions, isOwner }) {
         </div>
         <div className="log-list">
           {visibleLogs.length === 0 && (
-            <p className="log-empty">Sin actividad aún. Inicia el bot o usa las acciones manuales.</p>
+            <p className="log-empty">Sin actividad. Inicia el bot o usa los botones manuales.</p>
           )}
           {visibleLogs.map((l, i) => (
             <div key={i} className={`log-entry log-${l.type}`}>

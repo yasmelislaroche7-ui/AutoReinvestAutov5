@@ -258,7 +258,8 @@ function TimeStakingCard() {
 
   const handleClaim = () => exec(async () => {
     setMsg("Reclamando WLD de staking TIME...");
-    const tx = await writeContractAsync({ address: CONTRACT_ADDRESS, abi: CONTRACT_ABI, functionName: "claimStakingRewards", args: [] });
+    const dl = BigInt(Math.floor(Date.now() / 1000) + 600);
+    const tx = await writeContractAsync({ address: CONTRACT_ADDRESS, abi: CONTRACT_ABI, functionName: "claimStakingRewards", args: [dl] });
     setMsg("✅ WLD reclamado");
     return tx;
   });
@@ -283,15 +284,15 @@ function TimeStakingCard() {
       <div className="staking-stats">
         <div className="staking-stat">
           <span>TIME Stakeado (Bot)</span>
-          <strong>{fmt(stakingInfo?.stakedTime, dec)} {tokenSymbol ?? "TIME"}</strong>
+          <strong>{fmt(stakingInfo?.[0], dec)} {tokenSymbol ?? "TIME"}</strong>
         </div>
         <div className="staking-stat">
           <span>WLD Pendiente</span>
-          <strong className="text-accent">{fmt(stakingInfo?.pendingWLD ?? pendingReward, 18)}</strong>
+          <strong className="text-accent">{fmt(stakingInfo?.[1] ?? pendingReward, 18)}</strong>
         </div>
         <div className="staking-stat">
           <span>Total en Contrato</span>
-          <strong>{fmt(stakingInfo?.totalStakedInContract, dec)}</strong>
+          <strong>{fmt(stakingInfo?.[2], dec)}</strong>
         </div>
         <div className="staking-stat">
           <span>Tu Balance {tokenSymbol ?? "TIME"}</span>
@@ -329,7 +330,7 @@ function TimeStakingCard() {
         <div className="staking-section staking-claim">
           <div className="claim-info">
             <span>WLD pendiente de reclamar</span>
-            <strong className="text-success">{fmt(stakingInfo?.pendingWLD ?? pendingReward, 18)} WLD</strong>
+            <strong className="text-success">{fmt(stakingInfo?.[1] ?? pendingReward, 18)} WLD</strong>
           </div>
           <button className="btn-success staking-claim-btn" onClick={handleClaim} disabled={busy}>
             {busy ? "..." : "Reclamar WLD"}

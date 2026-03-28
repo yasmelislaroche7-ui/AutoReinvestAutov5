@@ -4,6 +4,7 @@ import { formatUnits } from "viem";
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../config/contract.js";
 
 const MAX_LOGS = 50;
+const deadline = () => BigInt(Math.floor(Date.now() / 1000) + 600);
 
 export function useBotStatus() {
   const [running, setRunning] = useState(false);
@@ -21,6 +22,7 @@ export function useBotStatus() {
     setLogs(prev => [{ msg, type, ts: new Date().toLocaleTimeString() }, ...prev].slice(0, MAX_LOGS));
   };
 
+  // viem returns arrays for multi-output functions — use numeric indices
   const readPositionFees = async (positions) => {
     if (!client || !positions?.length) return { fees0: 0, fees1: 0, inRange: 0 };
     let total0 = 0, total1 = 0, inRangeN = 0;
@@ -30,16 +32,19 @@ export function useBotStatus() {
           address: CONTRACT_ADDRESS,
           abi: CONTRACT_ABI,
           functionName: "getPosition",
-          args: [tokenId],
+          args: [BigInt(tokenId.toString())],
         });
         if (pos) {
-          const f0 = parseFloat(formatUnits(pos.tokensOwed0 ?? 0n, 18));
-          const f1 = parseFloat(formatUnits(pos.tokensOwed1 ?? 0n, 18));
+          // pos[6] = tokensOwed0, pos[7] = tokensOwed1, pos[9] = isInRange
+          const f0 = parseFloat(formatUnits(pos[6] ?? 0n, 18));
+          const f1 = parseFloat(formatUnits(pos[7] ?? 0n, 18));
           total0 += f0;
           total1 += f1;
-          if (pos.isInRange) inRangeN++;
+          if (pos[9]) inRangeN++;
         }
-      } catch {}
+      } catch (e) {
+        addLog(`⚠️ Error leyendo pos #${tokenId}: ${e.shortMessage || e.message}`, "warn");
+      }
     }
     return { fees0: total0, fees1: total1, inRange: inRangeN };
   };
@@ -53,31 +58,33 @@ export function useBotStatus() {
       setTotalFees1(fees1);
       setInRangeCount(inRange);
 
-      addLog(`📊 Posiciones en rango: ${inRange}/${positions.length}`);
-      addLog(`💰 Fees pendientes: ${fees0.toFixed(6)} / ${fees1.toFixed(6)}`);
+      addLog(`📊 En rango: ${inRange}/${positions.length} | Fees: ${fees0.toFixed(6)} / ${fees1.toFixed(6)}`);
 
       if (!address) {
         addLog("⚠️ Wallet no conectada. No se puede ejecutar.", "warn");
         return;
       }
 
+      // config[4] = paused
       const config = await client.readContract({
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
         functionName: "getConfig",
       });
 
-      if (config && config[5]) {
+      if (config && config[4]) {
         addLog("⏸ Contrato pausado, reinversión omitida.", "warn");
         return;
       }
 
-      addLog("⚡ Ejecutando reinversión (collectAll)...", "info");
+      addLog("⚡ Ejecutando collectAll...", "info");
+      // collectAll(uint256[] tokenIds, uint256 deadline)
+      const ids = positions.map(p => BigInt(p.toString()));
       const tx = await writeContractAsync({
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
         functionName: "collectAll",
-        args: [],
+        args: [ids, deadline()],
       });
       addLog(`✅ Tx: ${tx.slice(0, 10)}...${tx.slice(-6)}`, "success");
       setLastRun(new Date());
@@ -94,12 +101,13 @@ export function useBotStatus() {
 
   const runManualClaim = async () => {
     try {
-      addLog("🏆 Reclamando recompensas de staking (TIME)...", "info");
+      addLog("🏆 Reclamando recompensas TIME...", "info");
+      // claimStakingRewards(uint256 deadline)
       const tx = await writeContractAsync({
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
         functionName: "claimStakingRewards",
-        args: [],
+        args: [deadline()],
       });
       addLog(`✅ Claim enviado: ${tx.slice(0, 10)}...${tx.slice(-6)}`, "success");
     } catch (e) {
@@ -110,7 +118,7 @@ export function useBotStatus() {
 
   const refreshFees = async (positions) => {
     if (!positions?.length) return;
-    const { fees0, fees1, inRange } = await readPositionFees(positions.map(p => BigInt(p.toString())));
+    const { fees0, fees1, inRange } = await readPositionFees(positions);
     setTotalFees0(fees0);
     setTotalFees1(fees1);
     setInRangeCount(inRange);
@@ -120,9 +128,8 @@ export function useBotStatus() {
     if (intervalRef.current) clearInterval(intervalRef.current);
     setRunning(true);
     addLog(`🤖 Bot iniciado. Intervalo: ${intervalSecs}s`, "success");
-    const ids = positions.map(p => BigInt(p.toString()));
-    runReinvest(ids);
-    intervalRef.current = setInterval(() => runReinvest(ids), intervalSecs * 1000);
+    runReinvest(positions);
+    intervalRef.current = setInterval(() => runReinvest(positions), intervalSecs * 1000);
   };
 
   const stopBot = () => {
@@ -135,16 +142,9 @@ export function useBotStatus() {
   useEffect(() => () => { if (intervalRef.current) clearInterval(intervalRef.current); }, []);
 
   return {
-    running,
-    lastRun,
-    logs,
-    totalFees0,
-    totalFees1,
-    inRangeCount,
-    startBot,
-    stopBot,
-    runManualCollect,
-    runManualClaim,
-    refreshFees,
+    running, lastRun, logs,
+    totalFees0, totalFees1, inRangeCount,
+    startBot, stopBot,
+    runManualCollect, runManualClaim, refreshFees,
   };
 }

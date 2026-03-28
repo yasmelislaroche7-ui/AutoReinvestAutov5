@@ -6,8 +6,11 @@ import PositionCard from "../components/PositionCard.jsx";
 import ImportModal from "../components/ImportModal.jsx";
 import "../styles/Dashboard.css";
 
+// getConfig() returns array:
+// [0]=reinvestIntervalSecs [1]=reserveFeeBps [2]=h2oShareBps [3]=btch2oShareBps [4]=paused [5]=lastReinvestAt
+
 export default function Dashboard() {
-  const { isConnected, address } = useAccount();
+  const { isConnected } = useAccount();
   const isOwner = useIsOwner();
   const { data: positions, refetch: refetchPositions } = useContractRead("getManagedPositions", [], true);
   const { data: config } = useContractRead("getConfig", [], true);
@@ -15,12 +18,14 @@ export default function Dashboard() {
   const [showImport, setShowImport] = useState(false);
   const [pauseMsg, setPauseMsg] = useState("");
 
+  const isPaused = config?.[4] ?? false;
+
   const handleTogglePause = async () => {
     if (!config) return;
     try {
       setPauseMsg("Enviando transacción...");
-      await writeContract("setPaused", [!config[5]]);
-      setPauseMsg(config[5] ? "✅ Contrato reactivado" : "✅ Contrato pausado");
+      await writeContract("setPaused", [!isPaused]);
+      setPauseMsg(isPaused ? "✅ Contrato reactivado" : "✅ Contrato pausado");
     } catch (e) {
       setPauseMsg(`❌ Error: ${e.shortMessage || e.message}`);
     }
@@ -49,15 +54,9 @@ export default function Dashboard() {
           </p>
           <w3m-button />
           <div className="connect-features">
-            <div className="connect-feature">
-              <span>⚡</span><p>Reinversión automática</p>
-            </div>
-            <div className="connect-feature">
-              <span>🔒</span><p>Staking con APR</p>
-            </div>
-            <div className="connect-feature">
-              <span>📊</span><p>Monitoreo en tiempo real</p>
-            </div>
+            <div className="connect-feature"><span>⚡</span><p>Reinversión automática</p></div>
+            <div className="connect-feature"><span>🔒</span><p>Staking con APR</p></div>
+            <div className="connect-feature"><span>📊</span><p>Monitoreo en tiempo real</p></div>
           </div>
         </div>
       </div>
@@ -71,19 +70,19 @@ export default function Dashboard() {
           <h1>Panel de Control</h1>
           <span className="chain-badge">🌍 World Chain</span>
           {config && (
-            <span className={`status-badge ${config[5] ? "paused" : "active"}`}>
-              {config[5] ? "⏸ Pausado" : "● Activo"}
+            <span className={`status-badge ${isPaused ? "paused" : "active"}`}>
+              {isPaused ? "⏸ Pausado" : "● Activo"}
             </span>
           )}
         </div>
         <div className="dashboard-actions">
           {isOwner && config && (
             <button
-              className={`btn-${config[5] ? "success" : "warning"}`}
+              className={`btn-${isPaused ? "success" : "warning"}`}
               onClick={handleTogglePause}
               disabled={isPending}
             >
-              {config[5] ? "▶ Reactivar" : "⏸ Pausar"}
+              {isPaused ? "▶ Reactivar" : "⏸ Pausar"}
             </button>
           )}
           {isOwner && (
@@ -104,31 +103,33 @@ export default function Dashboard() {
         <div className="stats-bar">
           <div className="stat-chip">
             <span>Estado</span>
-            <strong className={config[5] ? "text-warn" : "text-success"}>
-              {config[5] ? "⏸ Pausado" : "● Activo"}
-            </strong>
-          </div>
-          <div className="stat-chip">
-            <span>Slippage</span>
-            <strong>
-              {Number(config[0]) === 0 ? "Sin límite" : `${(Number(config[0]) / 100).toFixed(2)}%`}
+            <strong className={isPaused ? "text-warn" : "text-success"}>
+              {isPaused ? "⏸ Pausado" : "● Activo"}
             </strong>
           </div>
           <div className="stat-chip">
             <span>Intervalo</span>
-            <strong>{(Number(config[1]) / 60).toFixed(1)} min</strong>
+            <strong>{(Number(config[0]) / 60).toFixed(1)} min</strong>
+          </div>
+          <div className="stat-chip">
+            <span>Reserva</span>
+            <strong>{(Number(config[1]) / 100).toFixed(1)}%</strong>
+          </div>
+          <div className="stat-chip">
+            <span>H2O / BTCH2O</span>
+            <strong>{(Number(config[2]) / 100).toFixed(0)}% / {(Number(config[3]) / 100).toFixed(0)}%</strong>
           </div>
           <div className="stat-chip">
             <span>Posiciones</span>
             <strong>{positions?.length ?? 0}</strong>
           </div>
           <div className="stat-chip">
-            <span>Reserva</span>
-            <strong>{Number(config[2])}%</strong>
-          </div>
-          <div className="stat-chip">
-            <span>H2O / BTCH2O</span>
-            <strong>{Number(config[3])}% / {Number(config[4])}%</strong>
+            <span>Último Reinvest</span>
+            <strong className="text-sm">
+              {Number(config[5]) > 0
+                ? new Date(Number(config[5]) * 1000).toLocaleTimeString()
+                : "Nunca"}
+            </strong>
           </div>
         </div>
       )}
@@ -138,13 +139,11 @@ export default function Dashboard() {
       <div className="positions-section">
         <div className="section-header">
           <h2>Posiciones Uniswap V3</h2>
-          <div style={{ display: "flex", gap: "8px" }}>
-            {isOwner && (
-              <button className="btn-secondary btn-sm" onClick={() => setShowImport(true)}>
-                + Agregar
-              </button>
-            )}
-          </div>
+          {isOwner && (
+            <button className="btn-secondary btn-sm" onClick={() => setShowImport(true)}>
+              + Agregar
+            </button>
+          )}
         </div>
 
         {!positions || positions.length === 0 ? (
@@ -172,10 +171,7 @@ export default function Dashboard() {
       </div>
 
       {showImport && (
-        <ImportModal
-          onClose={() => setShowImport(false)}
-          onSuccess={refetchPositions}
-        />
+        <ImportModal onClose={() => setShowImport(false)} onSuccess={refetchPositions} />
       )}
     </div>
   );
