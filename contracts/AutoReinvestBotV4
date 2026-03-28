@@ -5,9 +5,21 @@ import "@openzeppelin/contracts/access/Ownable2Step.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-// INTERFACES COMPLETAS Y CORRECTAS
+// TODAS LAS INTERFACES COMPLETAS
 interface IUniswapV3Factory {
     function getPool(address tokenA, address tokenB, uint24 fee) external view returns (address);
+}
+
+interface IUniswapV3Pool {
+    function slot0() external view returns (
+        uint160 sqrtPriceX96,
+        int24 tick,
+        uint16 observationIndex,
+        uint16 observationCardinality,
+        uint16 observationCardinalityNext,
+        uint16 feeProtocol,
+        bool unlocked
+    );
 }
 
 interface INonfungiblePositionManager {
@@ -57,11 +69,11 @@ interface ISwapRouter {
     function exactInputSingle(ExactInputSingleParams calldata params) external returns (uint256);
 }
 
-// CONTRATO 100% FUNCIONAL
+// CONTRATO 100% COMPILABLE
 contract AutoReinvestBotV4 is Ownable2Step {
     using SafeERC20 for IERC20;
 
-    // DIRECCIONES CON CHECKSUM CORRECTO WORLD CHAIN
+    // DIRECCIONES CON CHECKSUM CORRECTO
     address public constant POSITION_MANAGER = 0xEC12A9F9A09f50550686363766cC153D03C27B5E;
     address public constant SWAP_ROUTER = 0x091Ad9E2E6E5Ed44c1C66DB50E49A601F9F36Cf6;
     address public constant UNISWAP_FACTORY = 0x7A5028BDa40E7B173C278C5342087826455Ea25A;
@@ -105,10 +117,12 @@ contract AutoReinvestBotV4 is Ownable2Step {
         managedPositions.push(tokenId);
         isManaged[tokenId] = true;
 
-        // OBTENER DATOS DE RANGO
+        // OBTENER DATOS DE LA POSICION Y POOL
         (, , address t0, address t1, uint24 fee, int24 tLower, int24 tUpper, , , , , ) = 
             INonfungiblePositionManager(POSITION_MANAGER).positions(tokenId);
         address pool = IUniswapV3Factory(UNISWAP_FACTORY).getPool(t0, t1, fee);
+        
+        // OBTENER TICK ACTUAL
         (, int24 currentTick, , , , , ) = IUniswapV3Pool(pool).slot0();
         inRange[tokenId] = (currentTick >= tLower && currentTick <= tUpper);
     }
