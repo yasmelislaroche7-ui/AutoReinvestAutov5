@@ -10,7 +10,7 @@ export const worldchain = defineChain({
   name: "World Chain",
   nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: {
-    default: { http: ["https://worldchain-mainnet.g.alchemy.com/public"] },
+    default: { http: ["https://worldchain-mainnet.g.alchemy.com/v2/bVo646pb8L7_W_nahCoqW"] },
   },
   blockExplorers: {
     default: { name: "Worldscan", url: "https://worldscan.org" },
@@ -33,7 +33,7 @@ const connectors = [
 export const wagmiConfig = createConfig({
   chains: [worldchain],
   transports: {
-    [worldchain.id]: http("https://worldchain-mainnet.g.alchemy.com/public"),
+    [worldchain.id]: http("https://worldchain-mainnet.g.alchemy.com/v2/bVo646pb8L7_W_nahCoqW"),
   },
   connectors,
 });
