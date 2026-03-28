@@ -18,8 +18,8 @@ export const worldchain = defineChain({
 });
 
 const metadata = {
-  name: "PROYECTO DOLA - AutoReinvest Bot",
-  description: "Bot de reinversión automática en Uniswap V3 — World Chain",
+  name: "Acua Company - AutoReinvest Bot",
+  description: "Reinversión automática en Uniswap V3 con staking — World Chain",
   url: window?.location?.origin || "https://localhost",
   icons: [],
 };
@@ -45,7 +45,7 @@ createWeb3Modal({
   defaultChain: worldchain,
   themeMode: "dark",
   themeVariables: {
-    "--w3m-accent": "#6366f1",
+    "--w3m-accent": "#0ea5e9",
     "--w3m-border-radius-master": "8px",
   },
 });

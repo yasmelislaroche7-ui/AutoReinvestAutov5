@@ -12,13 +12,16 @@ export default function Header() {
     <header className="header">
       <div className="header-left">
         <div className="logo">
-          <span className="logo-icon">⚡</span>
-          <span className="logo-text">PROYECTO DOLA</span>
+          <span className="logo-icon">💧</span>
+          <span className="logo-text">Acua Company</span>
           <span className="logo-sub">AutoReinvest</span>
         </div>
         <nav className="nav">
           <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} to="/">
             Dashboard
+          </Link>
+          <Link className={`nav-link ${location.pathname === "/staking" ? "active" : ""}`} to="/staking">
+            Staking
           </Link>
           {isConnected && isOwner && (
             <Link className={`nav-link ${location.pathname === "/owner" ? "active" : ""}`} to="/owner">

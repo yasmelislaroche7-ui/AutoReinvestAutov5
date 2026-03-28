@@ -1,0 +1,43 @@
+.staking-page-connect {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 75vh;
+}
+
+.staking-page {
+  padding-bottom: 48px;
+}
+
+.staking-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.staking-page-header h1 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+
+.staking-page-sub {
+  color: var(--text2);
+  font-size: 14px;
+}
+
+.staking-panels-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 640px) {
+  .staking-page-header {
+    flex-direction: column;
+  }
+}

@@ -1,26 +1,58 @@
 .header {
-  background: var(--surface);
+  background: rgba(8, 10, 15, 0.92);
   border-bottom: 1px solid var(--border);
-  padding: 0 24px;
-  height: 60px;
+  padding: 0 28px;
+  height: 62px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
   z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.header-left { display: flex; align-items: center; gap: 32px; }
+.header-left { display: flex; align-items: center; gap: 36px; }
 
-.logo { display: flex; align-items: center; gap: 8px; }
-.logo-icon { font-size: 20px; }
-.logo-text { font-size: 16px; font-weight: 700; color: var(--accent2); letter-spacing: -0.02em; }
-.logo-sub { font-size: 11px; background: var(--surface2); color: var(--text2); padding: 2px 8px; border-radius: 12px; border: 1px solid var(--border); }
+.logo { display: flex; align-items: center; gap: 9px; }
+.logo-icon { font-size: 22px; }
+.logo-text {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent2);
+  letter-spacing: -0.3px;
+}
+.logo-sub {
+  font-size: 10px;
+  background: var(--surface2);
+  color: var(--text2);
+  padding: 2px 9px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
 
-.nav { display: flex; gap: 4px; }
-.nav-link { color: var(--text2); padding: 6px 12px; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s; }
-.nav-link:hover { color: var(--text); background: var(--surface2); text-decoration: none; }
-.nav-link.active { color: var(--accent2); background: var(--accent)22; }
+.nav { display: flex; gap: 2px; }
+.nav-link {
+  color: var(--text2);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.nav-link:hover {
+  color: var(--text);
+  background: var(--surface2);
+  text-decoration: none;
+}
+.nav-link.active {
+  color: var(--accent2);
+  background: rgba(14,165,233,0.1);
+  border: 1px solid rgba(14,165,233,0.15);
+}
 
-.header-right { display: flex; align-items: center; }
+.header-right { display: flex; align-items: center; gap: 12px; }

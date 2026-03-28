@@ -40,11 +40,25 @@ export default function Dashboard() {
     return (
       <div className="dashboard-connect">
         <div className="connect-card">
-          <div className="connect-icon">⚡</div>
-          <h1>PROYECTO DOLA</h1>
-          <h2>AutoReinvest Bot</h2>
-          <p>Conecta tu wallet para ver y gestionar tus posiciones de liquidez en World Chain.</p>
+          <div className="connect-icon">💧</div>
+          <h1>Acua Company</h1>
+          <h2>AutoReinvest Bot · World Chain</h2>
+          <p>
+            Conecta tu wallet para ver y gestionar tus posiciones de liquidez,
+            hacer stake y reinvertir recompensas automáticamente.
+          </p>
           <w3m-button />
+          <div className="connect-features">
+            <div className="connect-feature">
+              <span>⚡</span><p>Reinversión automática</p>
+            </div>
+            <div className="connect-feature">
+              <span>🔒</span><p>Staking con APR</p>
+            </div>
+            <div className="connect-feature">
+              <span>📊</span><p>Monitoreo en tiempo real</p>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -56,6 +70,11 @@ export default function Dashboard() {
         <div className="dashboard-title">
           <h1>Panel de Control</h1>
           <span className="chain-badge">🌍 World Chain</span>
+          {config && (
+            <span className={`status-badge ${config[5] ? "paused" : "active"}`}>
+              {config[5] ? "⏸ Pausado" : "● Activo"}
+            </span>
+          )}
         </div>
         <div className="dashboard-actions">
           {isOwner && config && (
@@ -64,7 +83,7 @@ export default function Dashboard() {
               onClick={handleTogglePause}
               disabled={isPending}
             >
-              {config[5] ? "▶ Reactivar Contrato" : "⏸ Pausar Contrato"}
+              {config[5] ? "▶ Reactivar" : "⏸ Pausar"}
             </button>
           )}
           {isOwner && (
@@ -75,19 +94,25 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {pauseMsg && <div className="banner">{pauseMsg}</div>}
+      {pauseMsg && (
+        <div className={`banner ${pauseMsg.startsWith("✅") ? "banner-success" : "banner-error"}`}>
+          {pauseMsg}
+        </div>
+      )}
 
       {config && (
         <div className="stats-bar">
           <div className="stat-chip">
-            <span>Contrato</span>
+            <span>Estado</span>
             <strong className={config[5] ? "text-warn" : "text-success"}>
-              {config[5] ? "⏸ Pausado" : "▶ Activo"}
+              {config[5] ? "⏸ Pausado" : "● Activo"}
             </strong>
           </div>
           <div className="stat-chip">
             <span>Slippage</span>
-            <strong>{Number(config[0]) === 0 ? "Sin límite" : `${(Number(config[0]) / 100).toFixed(2)}%`}</strong>
+            <strong>
+              {Number(config[0]) === 0 ? "Sin límite" : `${(Number(config[0]) / 100).toFixed(2)}%`}
+            </strong>
           </div>
           <div className="stat-chip">
             <span>Intervalo</span>
@@ -97,27 +122,35 @@ export default function Dashboard() {
             <span>Posiciones</span>
             <strong>{positions?.length ?? 0}</strong>
           </div>
+          <div className="stat-chip">
+            <span>Reserva</span>
+            <strong>{Number(config[2])}%</strong>
+          </div>
+          <div className="stat-chip">
+            <span>H2O / BTCH2O</span>
+            <strong>{Number(config[3])}% / {Number(config[4])}%</strong>
+          </div>
         </div>
       )}
 
-      <BotControl
-        positions={positions}
-        isOwner={isOwner}
-      />
+      <BotControl positions={positions} isOwner={isOwner} />
 
       <div className="positions-section">
         <div className="section-header">
-          <h2>Posiciones Gestionadas</h2>
-          {isOwner && (
-            <button className="btn-secondary btn-sm" onClick={() => setShowImport(true)}>
-              + Agregar
-            </button>
-          )}
+          <h2>Posiciones Uniswap V3</h2>
+          <div style={{ display: "flex", gap: "8px" }}>
+            {isOwner && (
+              <button className="btn-secondary btn-sm" onClick={() => setShowImport(true)}>
+                + Agregar
+              </button>
+            )}
+          </div>
         </div>
 
         {!positions || positions.length === 0 ? (
           <div className="empty-state">
-            <p>No hay posiciones gestionadas.</p>
+            <div className="empty-icon">📭</div>
+            <p>No hay posiciones gestionadas por el bot.</p>
             {isOwner && (
               <button className="btn-primary" onClick={() => setShowImport(true)}>
                 Importar primera posición

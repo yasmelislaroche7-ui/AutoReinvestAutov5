@@ -1,0 +1,238 @@
+.staking-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.staking-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.staking-panel-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.staking-panel-header h2::before {
+  content: "🔒";
+  font-size: 16px;
+}
+
+.staking-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.staking-tab {
+  padding: 6px 16px;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text2);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.staking-tab.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.staking-tab:hover:not(.active) {
+  color: var(--text);
+  background: var(--surface2);
+}
+
+.staking-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.staking-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.staking-card-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.staking-label {
+  font-size: 11px;
+  background: var(--accent)22;
+  color: var(--accent2);
+  border: 1px solid var(--accent)33;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.staking-msg {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.staking-msg.success { background: var(--success)15; color: var(--success); border: 1px solid var(--success)33; }
+.staking-msg.error { background: var(--danger)15; color: var(--danger); border: 1px solid var(--danger)33; }
+.staking-msg.info { background: var(--accent)15; color: var(--accent2); border: 1px solid var(--accent)33; }
+
+.staking-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 500px) {
+  .staking-stats { grid-template-columns: 1fr 1fr; }
+}
+
+.staking-stat {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.staking-stat span {
+  font-size: 11px;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.staking-stat strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.text-success { color: var(--success); }
+.text-accent { color: var(--accent2); }
+.text-warn { color: var(--warn); }
+
+.staking-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.staking-section {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.staking-section label {
+  font-size: 12px;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.staking-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.staking-input-row input { flex: 1; }
+
+.staking-btn {
+  width: 100%;
+  padding: 10px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.staking-claim {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.claim-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.claim-info span {
+  font-size: 12px;
+  color: var(--text2);
+}
+
+.claim-info strong {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.staking-claim .staking-btn {
+  width: auto;
+  padding: 10px 24px;
+}
+
+.staking-claim-btn {
+  padding: 9px 22px;
+  font-weight: 700;
+  border-radius: 8px;
+}
+
+.time-label {
+  background: rgba(245,158,11,0.12);
+  color: var(--warn);
+  border-color: rgba(245,158,11,0.25);
+}
+
+.staking-footer {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.staking-link {
+  font-size: 12px;
+  color: var(--text2);
+  text-decoration: none;
+}
+
+.staking-link:hover {
+  color: var(--accent2);
+}
+
+.staking-connect-hint {
+  color: var(--text2);
+  font-size: 13px;
+  text-align: center;
+  padding: 24px;
+}
