@@ -1,29 +1,37 @@
-# Acua Company — AutoReinvest Bot V5 (World Chain)
+# Acua Company — AutoReinvest Bot V6 (World Chain)
 
 ## Overview
 Full-stack DeFi automation: a Solidity smart contract + React frontend for automatically
-collecting Uniswap V3 fees on World Chain and reinvesting them into WLD/H2O/BTCH2O.
-Also supports dual staking: ACUA token staking and TIME token staking (via bot contract).
+collecting Uniswap V3 fees on World Chain and reinvesting them. Multi-token support for
+any ERC20 pair, configurable slippage and fee tiers, multi-token reserve panel, and triple
+staking (ACUA, TIME direct, SUSHI memberships).
 
 ## Deployed Contracts
-- **AutoReinvestBotV5**: `0x000051C9c9b556C8611cE1ceEDFc19140a1681d6`
+- **AutoReinvestBotV6**: `0xaAF4965b640730dECe37638BE429a48Fe4E0BCCE`
 - **ACUA Staking**: `0x6d6D559bF261415a52c59Cb1617387B6534E5041`
+- **TIME Staking**: `0x17e32C9E063533529F802839B9bA93e70D8953FE`
+- **SUSHI Staking**: `0x500EC550891D8f03DdD32d5854A3B15d052299Ca`
 - **Network**: World Chain (Chain ID: 480)
-- **Worldscan**: https://worldscan.org/address/0x000051C9c9b556C8611cE1ceEDFc19140a1681d6
+- **Worldscan**: https://worldscan.org/address/0xaAF4965b640730dECe37638BE429a48Fe4E0BCCE
+
+## Key Token Addresses
+- WLD: `0x2cFc85d8E48F8EAB294be644d9E25C3030863003`
+- TIME: `0x212d7448720852D8Ad282a5d4A895B3461F9076E`
+- SUSHI: `0xab09A728E53d3d6BC438BE95eeD46Da0Bbe7FB38`
 
 ## Project Structure
 ```
 contracts/
-  AutoReinvestBotV5.sol     Main smart contract
+  AutoReinvestBotV6.sol     Main smart contract (multi-token, configurable)
 scripts/
-  deploy.js                 Deploy to World Chain
-  verify.js                 Verify on Worldscan
-  processFees.js            Bot: collect fees & reinvest
+  deployV6.js               Deploy V6 to World Chain
 src/                        React frontend (Vite)
   config/
     wagmi.js                WalletConnect + wagmi setup
-    contract.js             AutoReinvest ABI + address
+    contract.js             AutoReinvest V6 ABI + address
     staking.js              ACUA Staking ABI + ERC20 ABI
+    sushi.js                SUSHI token + staking ABIs
+    time.js                 TIME token + TIME staking ABIs + WLD address
   pages/
     Dashboard.jsx           User dashboard with bot control
     OwnerPanel.jsx          Owner admin panel
@@ -31,13 +39,13 @@ src/                        React frontend (Vite)
   components/
     BotControl.jsx          Bot start/stop + manual reinvest/claim + last 10 logs
     PositionCard.jsx        Uniswap V3 position card with fees display
-    StakingPanel.jsx        Dual staking (ACUA + TIME) with tab navigation
+    StakingPanel.jsx        Triple staking: ACUA + TIME (direct) + SUSHI (memberships)
+    ConfigPanel.jsx         V6 config: interval, reserveFee, slippage, defaultFeeTier
+    ReservePanel.jsx        Multi-token reserve panel (dynamic token list)
     Header.jsx              Navigation header
-    ...
   hooks/
-    useBot.js               Bot logic: real position reads, manual reinvest/claim
+    useBot.js               Bot logic — uses collectAllManaged() for V6
     useContract.js          wagmi hooks for AutoReinvest contract
-    useStaking.js           Staking contract hooks + ERC20 approve
   styles/                   CSS styles
 hardhat.config.js           Hardhat + network configuration
 vite.config.js              Vite frontend configuration
@@ -45,39 +53,45 @@ vite.config.js              Vite frontend configuration
 
 ## Frontend Pages
 - **/** Dashboard: Position cards, Bot control panel, manual reinvest/claim buttons
-- **/staking**: Staking Hub with two panels (ACUA stake, TIME stake)
+- **/staking**: Staking Hub with three tabs (ACUA, TIME direct, SUSHI memberships)
 - **/owner**: Owner admin panel (config, positions, reserves, owners)
 
-## Frontend Features
-- Rebranded to **Acua Company** (formerly PROYECTO DOLA)
-- WalletConnect integration
-- Dashboard: real-time position cards showing in-range status + pending fees
-- Bot: starts/stops automated reinvest loop, shows last 10 log lines
-- **Manual Reinvest** button: calls `collectAll()` on the bot contract
-- **Manual Claim** button: calls `claimStakingRewards()` on the bot contract
-- Total unclaimed fees summary (Token 0 / Token 1)
-- In-range position counter
-- **ACUA Staking Panel**: stake/unstake/claim from `0x6d6D559bF261415a52c59Cb1617387B6534E5041`
-- **TIME Staking Panel**: stake/unstake TIME, claim WLD via AutoReinvest bot
-- ERC20 approve flow before staking (auto-detected)
+## V6 Contract Features (AutoReinvestBotV6.sol)
+- **Multi-token pairs**: Any ERC20 pair via addPosition(), not just WLD/H2O
+- **Configurable distribution tokens**: addDistToken(token, shareBps, feeTier)
+  - Replaces hardcoded H2O/BTCH2O from V5
+  - Each dist token gets a share of collected WLD fees
+- **Per-pair fee tier overrides**: setPairFeeTier(tokenA, tokenB, feeTier)
+- **Configurable slippage**: setSlippageBps(bps) — V6 uses min-out protection
+- **Default fee tier**: setDefaultSwapFeeTier(feeTier)
+- **Reserve token management**: addReserveToken/removeReserveToken (any ERC20)
+- **getReserveBalances()**: Returns (address[], uint256[]) for all reserve tokens
+- **collectAllManaged(deadline)**: Collects all managed positions in one call
+- **Inline FullMath mulDiv**: No external library dependency
 
-## AutoReinvest Bot Functions Used
-- `collectAll()` — collect fees + reinvest
-- `collectFees()` — collect fees only
-- `claimStakingRewards()` — claim WLD from TIME staking
-- `stakeTime(amount)` / `unstakeTime(amount)` — TIME staking via bot
-- `getStakingInfo()` / `pendingStakingReward` / `stakedTimeBalance` — TIME staking reads
-- `getPosition(tokenId)` — reads in-range status + pending fees
-- `getManagedPositions()` — list of managed NFT IDs
-- `getConfig()` — contract config (slippage, interval, pause state)
-- `TIME_TOKEN` — TIME token address getter
+## V6 getConfig() Return Values
+`[reinvestIntervalSecs, reserveFeeBps, slippageBps, defaultSwapFeeTier, paused, lastReinvestAt]`
+Note: V5 had [interval, reserveFee, h2oShare, btch2oShare, paused, lastReinvest]
+
+## V6 Constructor Parameters
+`(WLD_address, TIME_TOKEN_address, TIME_STAKING_address)`
+
+## Staking Panels
+- **ACUA**: Via ACUA_STAKING_ADDRESS, stake/unstake ACUA, claim ACUA rewards
+- **TIME (DIRECT)**: Via TIME_STAKING_ADDRESS directly (NOT through the bot), stake/unstake TIME, claim WLD rewards via `claimWldReward()`
+- **SUSHI**: Via SUSHI_STAKING_ADDRESS, buy membership (4 tiers: Plata/Oro/Platino/Diamante), retirarIntereses(), retirarBalance()
+
+## Bot Behavior (useBot.js)
+- `collectAllManaged(deadline)` — V6 main call (no tokenIds needed)
+- `claimStakingRewards(deadline)` — claim TIME staking WLD rewards through bot
+- Auto-reads position fees and in-range status via `getPosition()`
+- Interval-based reinvestment loop with manual override buttons
 
 ## Available Commands
 ```bash
 npm run dev          # Start React frontend (port 5000)
-npm run compile      # Compile contracts
-npm run deploy       # Deploy AutoReinvestBotV5 to World Chain
-npm run verify       # Verify contract on Worldscan
+echo "n" | npx hardhat compile   # Compile contracts
+echo "n" | npx hardhat run scripts/deployV6.js --network worldchain   # Deploy V6
 ```
 
 ## Key Dependencies

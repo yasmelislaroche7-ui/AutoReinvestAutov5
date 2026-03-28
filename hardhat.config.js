@@ -36,7 +36,7 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      worldchain: process.env.WORLD_APY_KEY || "placeholder"
+      worldchain: process.env.ETHER_KEY || process.env.WORLD_APY_KEY || "placeholder"
     },
     customChains: [
       {

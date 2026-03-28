@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "INonfungiblePositionManager",
-  "sourceName": "contracts/AutoReinvestBotV4.sol",
+  "sourceName": "contracts/AutoReinvestBotV6.sol",
   "abi": [
     {
       "inputs": [
@@ -37,12 +37,12 @@
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "amount0",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "amount1",
           "type": "uint256"
         }
       ],
@@ -90,7 +90,23 @@
         }
       ],
       "name": "increaseLiquidity",
-      "outputs": [],
+      "outputs": [
+        {
+          "internalType": "uint128",
+          "name": "liquidity",
+          "type": "uint128"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount0",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount1",
+          "type": "uint256"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -106,12 +122,12 @@
       "outputs": [
         {
           "internalType": "uint96",
-          "name": "",
+          "name": "nonce",
           "type": "uint96"
         },
         {
           "internalType": "address",
-          "name": "",
+          "name": "operator",
           "type": "address"
         },
         {
@@ -126,7 +142,7 @@
         },
         {
           "internalType": "uint24",
-          "name": "",
+          "name": "fee",
           "type": "uint24"
         },
         {
@@ -141,27 +157,27 @@
         },
         {
           "internalType": "uint128",
-          "name": "",
+          "name": "liquidity",
           "type": "uint128"
         },
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "feeGrowthInside0LastX128",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "feeGrowthInside1LastX128",
           "type": "uint256"
         },
         {
           "internalType": "uint128",
-          "name": "",
+          "name": "tokensOwed0",
           "type": "uint128"
         },
         {
           "internalType": "uint128",
-          "name": "",
+          "name": "tokensOwed1",
           "type": "uint128"
         }
       ],

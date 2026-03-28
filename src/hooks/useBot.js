@@ -77,14 +77,13 @@ export function useBotStatus() {
         return;
       }
 
-      addLog("⚡ Ejecutando collectAll...", "info");
-      // collectAll(uint256[] tokenIds, uint256 deadline)
-      const ids = positions.map(p => BigInt(p.toString()));
+      addLog("⚡ Ejecutando collectAllManaged...", "info");
+      // V6: collectAllManaged(uint256 deadline) — usa posiciones gestionadas internamente
       const tx = await writeContractAsync({
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
-        functionName: "collectAll",
-        args: [ids, deadline()],
+        functionName: "collectAllManaged",
+        args: [deadline()],
       });
       addLog(`✅ Tx: ${tx.slice(0, 10)}...${tx.slice(-6)}`, "success");
       setLastRun(new Date());

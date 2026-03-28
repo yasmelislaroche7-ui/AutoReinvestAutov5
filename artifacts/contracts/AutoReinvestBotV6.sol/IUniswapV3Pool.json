@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "IUniswapV3Pool",
-  "sourceName": "contracts/AutoReinvestBotV4.sol",
+  "sourceName": "contracts/AutoReinvestBotV6.sol",
   "abi": [
     {
       "inputs": [],
@@ -33,14 +33,40 @@
           "type": "uint16"
         },
         {
-          "internalType": "uint16",
+          "internalType": "uint8",
           "name": "",
-          "type": "uint16"
+          "type": "uint8"
         },
         {
           "internalType": "bool",
           "name": "",
           "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "token0",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "token1",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
         }
       ],
       "stateMutability": "view",

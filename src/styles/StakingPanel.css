@@ -236,3 +236,100 @@
   text-align: center;
   padding: 24px;
 }
+
+/* ── Sushi Card ─────────────────────────────── */
+.sushi-card { border-color: rgba(250,140,0,0.25); }
+
+.sushi-label {
+  background: rgba(250,140,0,0.12);
+  color: #fa8c00;
+  border-color: rgba(250,140,0,0.3);
+}
+
+.membership-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mem-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 12px;
+}
+
+.mem-btn:hover { border-color: #fa8c00; }
+
+.mem-btn.active {
+  border-color: #fa8c00;
+  background: rgba(250,140,0,0.1);
+}
+
+.mem-name { font-weight: 700; font-size: 13px; }
+.mem-apy  { color: var(--success); font-weight: 600; }
+.mem-cost { color: var(--text2); font-size: 11px; }
+
+.mem-details {
+  font-size: 12px;
+  color: var(--text2);
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  background: var(--bg);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+/* ── Reserve Panel — token info ─────────────── */
+.reserve-token-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.reserve-addr {
+  font-size: 10px;
+  color: var(--text2);
+  font-family: monospace;
+}
+
+.reserve-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.reserve-empty {
+  color: var(--text2);
+  font-size: 13px;
+  text-align: center;
+  padding: 24px;
+}
+
+.reserve-manage {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.reserve-manage h4 {
+  font-size: 13px;
+  margin-bottom: 12px;
+  color: var(--text2);
+}
+
+.reserve-manage-form .form-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+

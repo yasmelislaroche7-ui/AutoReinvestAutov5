@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "IUniswapV3Factory",
-  "sourceName": "contracts/AutoReinvestBotV4.sol",
+  "sourceName": "contracts/AutoReinvestBotV6.sol",
   "abi": [
     {
       "inputs": [

@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "ISwapRouter",
-  "sourceName": "contracts/AutoReinvestBotV4.sol",
+  "sourceName": "contracts/AutoReinvestBotV6.sol",
   "abi": [
     {
       "inputs": [
@@ -57,7 +57,7 @@
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "amountOut",
           "type": "uint256"
         }
       ],
