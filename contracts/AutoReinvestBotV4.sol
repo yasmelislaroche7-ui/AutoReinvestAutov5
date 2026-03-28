@@ -63,7 +63,7 @@ contract AutoReinvestBotV5 is Ownable2Step {
     using SafeERC20 for IERC20;
 
     address public constant POSITION_MANAGER = 0xEC12A9F9A09f50550686363766cC153D03C27B5E;
-    address public constant SWAP_ROUTER = 0x091AD9e2E6E5Ed44c1C66DB50E49A601F9F36Cf6;
+    address public constant SWAP_ROUTER = 0x091AD9e2e6e5Ed44c1c66dB50e49A601F9f36Cf6;
     address public constant UNISWAP_FACTORY = 0x7a5028BDa40e7B173C278C5342087826455ea25a;
 
     address public immutable WLD;
