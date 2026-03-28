@@ -1,9 +1,9 @@
-modules = ["nodejs-20", "web", "postgresql-16"]
+modules = ["nodejs-20"]
 run = "npm run dev"
 hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
 [nix]
-channel = "stable-24_05"
+channel = "stable-25_05"
 
 [[ports]]
 localPort = 5000
@@ -33,7 +33,20 @@ args = "Start application"
 name = "Start application"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "console"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run dev"
-waitForPort = 5000
+args = """
+HARDHAT_DISABLE_TELEMETRY_PROMPT=true npm run compile && echo '
+Contracts compiled successfully!
+
+Available commands:
+  npm run deploy       - Deploy to World Chain
+  npm run process-fees - Process fees
+  npm run verify       - Verify contract on Worldscan
+  npm run test         - Run tests'"""
+
+[agent]
+expertMode = true

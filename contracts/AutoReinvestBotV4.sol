@@ -58,16 +58,14 @@ interface ISwapRouter {
 contract AutoReinvestBotV4 is Ownable2Step {
     using SafeERC20 for IERC20;
 
-    // ✅ CHECKSUM ARREGLADO
-    address public constant POSITION_MANAGER = 0xEC12A9F9A09f50550686363766cC153D03C27B5E;
-    address public constant SWAP_ROUTER     = 0x091AD9e2e6e5Ed44c1c66dB50e49A601F9f36Cf6;
-    address public constant UNISWAP_FACTORY = 0x7a5028BDa40E7B173C278C5342087826455Ea25A;
+    address public constant POSITION_MANAGER = 0xec12a9F9a09f50550686363766Cc153D03c27b5e;
+    address public constant SWAP_ROUTER     = 0x091AD9e2e6e5eD44c1c66dB50e49A601F9f36cF6;
+    address public constant UNISWAP_FACTORY = 0x7a5028BDa40e7B173C278C5342087826455ea25a;
 
     address public immutable WLD;
     address public immutable H2O;
     address public immutable BTCH2O;
 
-    // ✅ FIX OZ V5 CONSTRUCTOR
     constructor(address _WLD,address _H2O,address _BTCH2O) Ownable(msg.sender){
         WLD=_WLD; H2O=_H2O; BTCH2O=_BTCH2O;
     }
@@ -99,8 +97,7 @@ contract AutoReinvestBotV4 is Ownable2Step {
             uint256 id=tokenIds[i];
             require(isManaged[id],"Not managed");
 
-            // ✅ FIX: obtener tokens de la posición
-            (, , address token0,address token1,,,,,,,) =
+            (, , address token0,,,,,,,,,) =
                 INonfungiblePositionManager(POSITION_MANAGER).positions(id);
 
             (uint256 a0,uint256 a1)=INonfungiblePositionManager(POSITION_MANAGER).collect(
@@ -141,8 +138,8 @@ contract AutoReinvestBotV4 is Ownable2Step {
     }
 
     function swap(address from,address to,uint256 amt,uint256 deadline) internal returns(uint256){
-        IERC20(from).safeApprove(SWAP_ROUTER,0);
-        IERC20(from).safeApprove(SWAP_ROUTER,amt);
+        IERC20(from).forceApprove(SWAP_ROUTER, 0);
+        IERC20(from).forceApprove(SWAP_ROUTER, amt);
 
         return ISwapRouter(SWAP_ROUTER).exactInputSingle(
             ISwapRouter.ExactInputSingleParams({
