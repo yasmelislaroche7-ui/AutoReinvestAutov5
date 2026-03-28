@@ -5,10 +5,10 @@ async function main() {
   const AutoReinvestBotV4 = await ethers.getContractFactory("AutoReinvestBotV4");
 
   // DATOS QUE DEBES CONFIGURAR
-  const STAKING_CONTRACT = "DIRECCION_CONTRATO_STAKING_AQUI";
-  const WLD_TOKEN = "DIRECCION_TOKEN_WLD_AQUI";
-  const H2O_TOKEN = "DIRECCION_TOKEN_H2O_AQUI";
-  const BTCH2O_TOKEN = "DIRECCION_TOKEN_BTCH2O_AQUI";
+  const STAKING_CONTRACT = "0x17e32c9e063533529f802839b9ba93e70d8953fe";
+  const WLD_TOKEN = "0x2cfc85d8e48f8eab294be644d9e25c3030863003";
+  const H2O_TOKEN = "0x17392e5483983945dEB92e0518a8F2C4eB6bA59d";
+  const BTCH2O_TOKEN = "0xEcC4dAe4DC3D359a93046bd944e9ee3421A6A484";
 
   // DEPLOY
   console.log("Deployando contrato...");
