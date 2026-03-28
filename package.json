@@ -1,0 +1,40 @@
+{
+  "name": "auto-reinvest-bot-worldchain",
+  "version": "1.0.0",
+  "description": "Bot de reinversión automática para Uniswap V3 en World Chain - PROYECTO DOLA",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.js --network worldchain",
+    "verify": "npx hardhat run scripts/verify.js --network worldchain",
+    "test": "npx hardhat test",
+    "node": "npx hardhat node",
+    "process-fees": "npx hardhat run scripts/processFees.js --network worldchain"
+  },
+  "keywords": [
+    "worldchain",
+    "uniswap",
+    "solidity",
+    "defi",
+    "bot",
+    "proyecto-dola"
+  ],
+  "author": "DOLA",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "@openzeppelin/contracts": "^5.0.2", // Versión actualizada
+    "chai": "^4.4.1",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.12.1",
+    "hardhat": "^2.22.3"
+  },
+  "dependencies": {
+    "@uniswap/v3-core": "^1.0.1",
+    "@uniswap/v3-periphery": "^1.4.4"
+  }
+}
