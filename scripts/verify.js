@@ -1,30 +1,26 @@
 const { run } = require("hardhat");
+require("dotenv").config();
 
 async function main() {
-  // DATOS DEL DEPLOY
-  const CONTRACT_ADDRESS = "DIRECCION_DEL_CONTRATO_DEPLOYADO";
-  const STAKING_CONTRACT = "DIRECCION_CONTRATO_STAKING";
-  const WLD_TOKEN = "DIRECCION_TOKEN_WLD";
-  const H2O_TOKEN = "DIRECCION_TOKEN_H2O";
-  const BTCH2O_TOKEN = "DIRECCION_TOKEN_BTCH2O";
+  const fs = require("fs");
 
-  // VERIFICACIÓN EN WORLDSCAN
+  let address = process.env.STAKING_CONTRACT;
+  if (!address && fs.existsSync(".deployed_address")) {
+    address = fs.readFileSync(".deployed_address", "utf8").trim();
+  }
+  if (!address) throw new Error("Set STAKING_CONTRACT or deploy first.");
+
+  const WLD_TOKEN    = process.env.WLD_TOKEN;
+  const H2O_TOKEN    = process.env.H2O_TOKEN;
+  const BTCH2O_TOKEN = process.env.BTCH2O_TOKEN;
+
+  console.log(`Verificando: ${address}`);
   await run("verify:verify", {
-    address: CONTRACT_ADDRESS,
-    constructorArguments: [
-      STAKING_CONTRACT,
-      WLD_TOKEN,
-      H2O_TOKEN,
-      BTCH2O_TOKEN
-    ]
+    address,
+    constructorArguments: [WLD_TOKEN, H2O_TOKEN, BTCH2O_TOKEN],
+    contract: "contracts/AutoReinvestBotV5.sol:AutoReinvestBotV5"
   });
-
-  console.log("Contrato verificado exitosamente!");
+  console.log("✅ Verificado en Worldscan.");
 }
 
-main()
-  .then(() => process.exit(0))
-  .catch(error => {
-    console.error(error);
-    process.exit(1);
-  });
+main().then(() => process.exit(0)).catch(e => { console.error(e); process.exit(1); });

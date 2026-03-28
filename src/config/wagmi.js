@@ -1,0 +1,51 @@
+import { createConfig, http } from "wagmi";
+import { defineChain } from "viem";
+import { walletConnect, injected, coinbaseWallet } from "wagmi/connectors";
+import { createWeb3Modal } from "@web3modal/wagmi";
+
+const WC_PROJECT_ID = "befde1d683c68f9cf789993998fbda38";
+
+export const worldchain = defineChain({
+  id: 480,
+  name: "World Chain",
+  nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://worldchain-mainnet.g.alchemy.com/public"] },
+  },
+  blockExplorers: {
+    default: { name: "Worldscan", url: "https://worldscan.org" },
+  },
+});
+
+const metadata = {
+  name: "PROYECTO DOLA - AutoReinvest Bot",
+  description: "Bot de reinversión automática en Uniswap V3 — World Chain",
+  url: window?.location?.origin || "https://localhost",
+  icons: [],
+};
+
+const connectors = [
+  walletConnect({ projectId: WC_PROJECT_ID, metadata, showQrModal: false }),
+  injected({ shimDisconnect: true }),
+  coinbaseWallet({ appName: metadata.name }),
+];
+
+export const wagmiConfig = createConfig({
+  chains: [worldchain],
+  transports: {
+    [worldchain.id]: http("https://worldchain-mainnet.g.alchemy.com/public"),
+  },
+  connectors,
+});
+
+createWeb3Modal({
+  wagmiConfig,
+  projectId: WC_PROJECT_ID,
+  chains: [worldchain],
+  defaultChain: worldchain,
+  themeMode: "dark",
+  themeVariables: {
+    "--w3m-accent": "#6366f1",
+    "--w3m-border-radius-master": "8px",
+  },
+});

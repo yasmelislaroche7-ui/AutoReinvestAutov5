@@ -4,6 +4,9 @@
   "description": "Bot de reinversión automática para Uniswap V3 en World Chain - PROYECTO DOLA",
   "main": "index.js",
   "scripts": {
+    "dev": "vite --port 5000 --host",
+    "build": "vite build",
+    "preview": "vite preview",
     "compile": "npx hardhat compile",
     "deploy": "npx hardhat run scripts/deploy.js --network worldchain",
     "verify": "npx hardhat run scripts/verify.js --network worldchain",
@@ -21,6 +24,17 @@
   ],
   "author": "DOLA",
   "license": "MIT",
+  "dependencies": {
+    "@tanstack/react-query": "^5.95.2",
+    "@uniswap/v3-core": "^1.0.1",
+    "@uniswap/v3-periphery": "^1.4.4",
+    "@web3modal/wagmi": "^4.2.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.3",
+    "viem": "^2.47.6",
+    "wagmi": "^2.19.5"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
     "@nomicfoundation/hardhat-ethers": "^3.0.0",
@@ -28,13 +42,13 @@
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@nomicfoundation/hardhat-verify": "^2.0.0",
     "@openzeppelin/contracts": "^5.0.1",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.7.0",
     "chai": "^4.4.1",
     "dotenv": "^16.4.5",
     "ethers": "^6.12.1",
-    "hardhat": "^2.22.3"
-  },
-  "dependencies": {
-    "@uniswap/v3-core": "^1.0.1",
-    "@uniswap/v3-periphery": "^1.4.4"
+    "hardhat": "^2.22.3",
+    "vite": "^5.4.21"
   }
 }

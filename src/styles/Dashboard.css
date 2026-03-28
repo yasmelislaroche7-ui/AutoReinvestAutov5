@@ -1,0 +1,39 @@
+.dashboard-connect {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+}
+
+.connect-card {
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px;
+  max-width: 480px;
+}
+
+.connect-icon { font-size: 48px; margin-bottom: 16px; }
+.connect-card h1 { font-size: 28px; font-weight: 800; color: var(--accent2); }
+.connect-card h2 { font-size: 16px; color: var(--text2); font-weight: 400; margin: 8px 0 16px; }
+.connect-card p { color: var(--text2); margin-bottom: 24px; line-height: 1.7; }
+
+.dashboard-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.dashboard-title { display: flex; align-items: center; gap: 12px; }
+.dashboard-title h1 { font-size: 24px; font-weight: 700; }
+.chain-badge { background: var(--surface2); color: var(--accent2); border: 1px solid var(--accent)44; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.dashboard-actions { display: flex; gap: 8px; }
+
+.stats-bar { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+.stat-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 120px; }
+.stat-chip span { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; }
+.stat-chip strong { font-size: 16px; font-weight: 600; }
+
+.banner { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; margin-bottom: 16px; }
+
+.positions-section { margin-top: 32px; }
+.positions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+
+.empty-state { text-align: center; padding: 48px; background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius); }
+.empty-state p { color: var(--text2); margin-bottom: 16px; }

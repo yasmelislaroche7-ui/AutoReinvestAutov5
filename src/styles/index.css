@@ -1,0 +1,61 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0b0f;
+  --surface: #12141a;
+  --surface2: #1a1d26;
+  --border: #252836;
+  --accent: #6366f1;
+  --accent2: #818cf8;
+  --success: #22c55e;
+  --warn: #f59e0b;
+  --danger: #ef4444;
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --radius: 12px;
+}
+
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+input, select, textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+  padding: 8px 12px;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+input:focus, select:focus { border-color: var(--accent); }
+
+button { cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 500; border: none; border-radius: 8px; transition: all 0.2s; white-space: nowrap; }
+
+.btn-primary { background: var(--accent); color: #fff; padding: 8px 16px; }
+.btn-primary:hover:not(:disabled) { background: var(--accent2); }
+.btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); padding: 8px 16px; }
+.btn-secondary:hover:not(:disabled) { border-color: var(--accent); color: var(--accent2); }
+.btn-danger { background: #3b1212; color: var(--danger); border: 1px solid var(--danger)33; padding: 8px 16px; }
+.btn-danger:hover:not(:disabled) { background: var(--danger); color: #fff; }
+.btn-success { background: #0f2e1a; color: var(--success); border: 1px solid var(--success)44; padding: 8px 16px; }
+.btn-success:hover:not(:disabled) { background: var(--success); color: #fff; }
+.btn-warning { background: #2e1f0a; color: var(--warn); border: 1px solid var(--warn)44; padding: 8px 16px; }
+.btn-warning:hover:not(:disabled) { background: var(--warn); color: #000; }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-xs { padding: 3px 8px; font-size: 11px; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+label { display: block; color: var(--text2); font-size: 12px; font-weight: 500; margin-bottom: 4px; letter-spacing: 0.05em; text-transform: uppercase; }

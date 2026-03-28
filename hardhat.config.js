@@ -9,20 +9,14 @@ module.exports = {
       {
         version: "0.8.20",
         settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200
-          },
+          optimizer: { enabled: true, runs: 200 },
           viaIR: true
         }
       },
       {
         version: "0.8.24",
         settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200
-          },
+          optimizer: { enabled: true, runs: 200 },
           viaIR: true
         }
       }
@@ -30,9 +24,10 @@ module.exports = {
   },
   networks: {
     worldchain: {
-      url: process.env.WORLD_CHAIN_URL || "https://rpc.worldchain.gg",
+      url: process.env.WORLD_CHAIN_URL || "https://worldchain-mainnet.g.alchemy.com/public",
       accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
-      chainId: 480
+      chainId: 480,
+      timeout: 120000
     },
     localhost: {
       url: "http://127.0.0.1:8545",
@@ -41,17 +36,20 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      worldchain: process.env.WORLD_SCAN_API_KEY || ""
+      worldchain: process.env.WORLD_APY_KEY || "placeholder"
     },
     customChains: [
       {
         network: "worldchain",
         chainId: 480,
         urls: {
-          apiURL: "https://api.worldscan.io/api",
-          browserURL: "https://worldscan.io"
+          apiURL: "https://api.worldscan.org/api",
+          browserURL: "https://worldscan.org"
         }
       }
     ]
+  },
+  sourcify: {
+    enabled: false
   }
 };

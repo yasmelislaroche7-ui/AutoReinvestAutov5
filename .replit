@@ -34,19 +34,12 @@ name = "Start application"
 author = "agent"
 
 [workflows.workflow.metadata]
-outputType = "console"
+outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = """
-HARDHAT_DISABLE_TELEMETRY_PROMPT=true npm run compile && echo '
-Contracts compiled successfully!
-
-Available commands:
-  npm run deploy       - Deploy to World Chain
-  npm run process-fees - Process fees
-  npm run verify       - Verify contract on Worldscan
-  npm run test         - Run tests'"""
+args = "npm run dev"
+waitForPort = 5000
 
 [agent]
 expertMode = true
